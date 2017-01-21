@@ -53,6 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="JV Test Mode", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+@Disabled
 public class JVTestMode extends OpMode
 {
     /* Declare OpMode members. */
@@ -133,8 +134,8 @@ public class JVTestMode extends OpMode
 
 
         if (gamepad2.a) {
-            pewLeft.setPower(-0.8);
-            pewRight.setPower(0.8);
+            pewLeft.setPower(-0.6);
+            pewRight.setPower(0.6);
         }
         if (!gamepad2.a) {
             pewLeft.setPower(0);

@@ -68,6 +68,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="JV Auto 3", group="Pushbot")
+@Disabled
 public class JVAuto3 extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -30,16 +30,17 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 package org.firstinspires.ftc.teamcode;
+
+// upgrade to sdk 2.4
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -68,30 +69,24 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JV Auto 4", group="Pushbot")
-@Disabled
-public class JVAuto4 extends LinearOpMode {
+@Autonomous(name="V Auto CounterClock", group="Pushbot")
+public class VAuto1Counter extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2 ;     // 2 because 1:2 gear ratio
+    static final double     DRIVE_GEAR_REDUCTION    = 0.6666 ;     // 0.66666 because 3:2 gear ratio
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.3;
-    static final double     TURN_SPEED              = 0.25;
+    static final double     DRIVE_SPEED             = .4;
+    static final double     TURN_SPEED              = 0.5;
 
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
-    private DcMotor frontleftMotor = null;
-    private DcMotor frontrightMotor = null;
-    private DcMotor pewLeft= null;
-    private DcMotor pewRight = null;
-    private DcMotor grabby = null;
-    private DcMotor lifty = null;
-    private ColorSensor color = null;
+    private DcMotor pews= null;
+    private DcMotor feedy = null;
 
     @Override
     public void runOpMode() {
@@ -104,139 +99,55 @@ public class JVAuto4 extends LinearOpMode {
         leftMotor  = hardwareMap.dcMotor.get("left motor");
         rightMotor = hardwareMap.dcMotor.get("right motor");
 
-        frontleftMotor  = hardwareMap.dcMotor.get("fleft motor");
-        frontrightMotor = hardwareMap.dcMotor.get("fright motor");
+        pews  = hardwareMap.dcMotor.get("pews");
 
-        pewLeft  = hardwareMap.dcMotor.get("pewleft");
-        pewRight = hardwareMap.dcMotor.get("pewright");
+        feedy  = hardwareMap.dcMotor.get("feedy");
 
-        grabby  = hardwareMap.dcMotor.get("grabby");
-        lifty = hardwareMap.dcMotor.get("lifty");
 
-        color = hardwareMap.colorSensor.get("color");
+        // Send telemetry message to signify robot waiting;
+        telemetry.addData("Status", "Resetting Encoders");
+        telemetry.update();
+
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        idle();
+
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // Send telemetry message to indicate successful Encoder reset
+        telemetry.addData("Path0",  "Starting at %7d :%7d",
+                leftMotor.getCurrentPosition(),
+                rightMotor.getCurrentPosition());
+        telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Go Forward
-        //Shoots
-        //Go right
-        //Back onto the ramp all the way
+//        Go forward 24 inches
+//        Turn left 45 degrees
+//        Fire Balls
+//        Go forward 58 inches
+//        Turn right 90 degrees
+//        Back up 76 inches
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        pews.setPower(.85);
+        sleep(2000);
+        feedy.setPower(.25);
+        sleep(1000);
+        pews.setPower(0);
+        feedy.setPower(0);
+        sleep(7000);
+        //encoderDrive(TURN_SPEED,   6, 6, 1.0);  // S2: Turn Left both neg 6 Inches (45 degrees) with 1 Sec timeout
+        encoderDrive(.5,  -52,  52, 8);
+        encoderDrive(.7,  -10,  10, 8);
+        encoderDrive(.5, -30, -30, 10);
 
-        driveForward(1,1);
-        shoot(5000);
-        turnRight(1,1);
-        driveBackward(1,1);
-        turnLeft(1,1);
-        driveBackward(1,1);
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
-
-
-    public void shoot(double seconds)
-    {
-        pewLeft.setPower(-0.8);
-        pewRight.setPower(0.8);
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            lifty.setPower(.5);
-            sleep(500);
-            lifty.setPower(0);
-            sleep(500);
-        }
-        pewLeft.setPower(0);
-        pewRight.setPower(0);
-    }
-
-    public void pushBeakon(){
-        while(color.blue() < 2 || color.blue() < 3)
-        {
-            driveBackward(1,1);
-        }
-
-        while(color.red() < 10 || color.red() < 11)
-        {
-            driveBackward(1,1);
-        }
-    }
-
-
-
-
-
-
-    //     Method to drive forward with speed and time
-    public void driveBackward(double speed, double seconds) {
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            leftMotor.setPower(-speed);
-            frontleftMotor.setPower(-speed);
-            rightMotor.setPower(speed);
-            frontrightMotor.setPower(speed);
-        }
-        leftMotor.setPower(0);
-        frontleftMotor.setPower(0);
-        rightMotor.setPower(0);
-        frontrightMotor.setPower(0);
-    }
-
-
-    //     Method to drive backward with speed and time
-    public void driveForward(double speed, double seconds) {
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            leftMotor.setPower(speed);
-            frontleftMotor.setPower(speed);
-            rightMotor.setPower(-speed);
-            frontrightMotor.setPower(-speed);
-        }
-        leftMotor.setPower(0);
-        frontleftMotor.setPower(0);
-        rightMotor.setPower(0);
-        frontrightMotor.setPower(0);
-    }
-
-    //     Method to turn left with speed and time
-    public void turnLeft(double speed, double seconds) {
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            leftMotor.setPower(speed);
-            frontleftMotor.setPower(speed);
-            rightMotor.setPower(speed);
-            frontrightMotor.setPower(speed);
-        }
-        leftMotor.setPower(0);
-        frontleftMotor.setPower(0);
-        rightMotor.setPower(0);
-        frontrightMotor.setPower(0);
-    }
-
-    //     Method to turn right with speed and time
-    public void turnRight(double speed, double seconds) {
-        runtime.reset();
-        while(runtime.seconds() < seconds) {
-            leftMotor.setPower(-speed);
-            frontleftMotor.setPower(-speed);
-            rightMotor.setPower(-speed);
-            frontrightMotor.setPower(-speed);
-        }
-        leftMotor.setPower(0);
-        frontleftMotor.setPower(0);
-        rightMotor.setPower(0);
-        frontrightMotor.setPower(0);
-    }
-
-
-
-
-
-
-
-
 
     /*
      *  Method to perfmorm a relative move, based on encoder counts.
@@ -246,7 +157,6 @@ public class JVAuto4 extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    //Deprecated
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
@@ -267,11 +177,9 @@ public class JVAuto4 extends LinearOpMode {
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
-            runtime.reset()  ;
+            runtime.reset();
             leftMotor.setPower(Math.abs(speed));
             rightMotor.setPower(Math.abs(speed));
-            frontleftMotor.setPower(speed);
-            frontrightMotor.setPower(-speed);
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
@@ -289,8 +197,6 @@ public class JVAuto4 extends LinearOpMode {
             // Stop all motion;
             leftMotor.setPower(0);
             rightMotor.setPower(0);
-            frontleftMotor.setPower(0);
-            frontrightMotor.setPower(0);
 
             // Turn off RUN_TO_POSITION
             leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

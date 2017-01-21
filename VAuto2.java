@@ -67,21 +67,19 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="V Auto 2", group="Pushbot")
-@Disabled
+@Autonomous(name="V Auto just shoot", group="Pushbot")
 public class VAuto2 extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 0.6666 ;     // 0.66666 because 3:2 gear ratio
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 1;
-    static final double     TURN_SPEED              = 0.25;
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     DRIVE_SPEED             = .4;
+    static final double     TURN_SPEED              = 0.5;
 
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
@@ -117,8 +115,8 @@ public class VAuto2 extends LinearOpMode {
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
-                          leftMotor.getCurrentPosition(),
-                          rightMotor.getCurrentPosition());
+                leftMotor.getCurrentPosition(),
+                rightMotor.getCurrentPosition());
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -134,12 +132,16 @@ public class VAuto2 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         pews.setPower(.85);
-        sleep(1500);
-        feedy.setPower(.25);
         sleep(2000);
-        feedy.setPower(0);
+        feedy.setPower(.25);
+        sleep(1000);
         pews.setPower(0);
-        encoderDrive(DRIVE_SPEED,  -64,  64, 4.0);
+        feedy.setPower(0);
+        sleep(7000);
+
+
+
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -179,14 +181,14 @@ public class VAuto2 extends LinearOpMode {
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
-                   (runtime.seconds() < timeoutS) &&
-                   (leftMotor.isBusy() && rightMotor.isBusy())) {
+                    (runtime.seconds() < timeoutS) &&
+                    (leftMotor.isBusy() && rightMotor.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
                 telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            leftMotor.getCurrentPosition(),
-                                            rightMotor.getCurrentPosition());
+                        leftMotor.getCurrentPosition(),
+                        rightMotor.getCurrentPosition());
                 telemetry.update();
             }
 

@@ -69,6 +69,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="V Auto Color Sensor", group="Pushbot")
+@Disabled
 public class VAuto3 extends LinearOpMode {
 
     /* Declare OpMode members. */

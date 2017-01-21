@@ -67,7 +67,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JV Auto 2", group="Pushbot")
+@Autonomous(name="JV Auto 2 (No park)", group="Pushbot")
+@Disabled
 public class JVAuto2 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -124,30 +125,45 @@ public class JVAuto2 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         driveForward(1,1);
-        pewLeft.setPower(-0.8);
-        pewRight.setPower(0.8);
+        pewLeft.setPower(-0.6);
+        pewRight.setPower(0.6);
         sleep(1500);
         lifty.setPower(.5);
-        sleep(500);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
-        sleep(500);
+        grabby.setPower(0);
+        sleep(800);
         lifty.setPower(.5);
-        sleep(500);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
-        sleep(500);
+        grabby.setPower(0);
+        sleep(800);
         lifty.setPower(.5);
-        sleep(500);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
-        sleep(500);
+        grabby.setPower(0);
+        sleep(800);
         lifty.setPower(.5);
-        sleep(500);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
-        sleep(500);
+        grabby.setPower(0);
+        sleep(800);
         lifty.setPower(.5);
-        sleep(500);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
-        sleep(500);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
         lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
         sleep(2000);
 
         sleep(1000);     // pause for servos to move

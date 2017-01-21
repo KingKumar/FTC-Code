@@ -53,7 +53,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Test Mode", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
-@Disabled
 public class TestMode extends OpMode
 {
     /* Declare OpMode members. */

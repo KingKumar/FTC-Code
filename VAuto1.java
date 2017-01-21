@@ -38,7 +38,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -67,8 +66,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="V Auto 1", group="Pushbot")
-@Disabled
+@Autonomous(name="V Auto Clock", group="Pushbot")
 public class VAuto1 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -80,7 +78,7 @@ public class VAuto1 extends LinearOpMode {
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = .4;
-    static final double     TURN_SPEED              = 0.25;
+    static final double     TURN_SPEED              = 0.5;
 
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
@@ -140,10 +138,9 @@ public class VAuto1 extends LinearOpMode {
         feedy.setPower(0);
         sleep(7000);
         //encoderDrive(TURN_SPEED,   6, 6, 1.0);  // S2: Turn Left both neg 6 Inches (45 degrees) with 1 Sec timeout
-        encoderDrive(DRIVE_SPEED,  -62,  62, 8);
-
-
-
+        encoderDrive(.5,  -52,  52, 8);
+        encoderDrive(.7,  -10,  10, 8);
+        encoderDrive(.5, 30, 30, 10);
 
 
         telemetry.addData("Path", "Complete");
