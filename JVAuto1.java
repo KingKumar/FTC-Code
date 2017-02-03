@@ -67,8 +67,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JV Auto 1 (Park)", group="Pushbot")
-@Disabled
+// Drives forward for 1.5 seconds, shoots balls, drive forward for 3 seconds and park
+@Autonomous(name="Corner to Center", group="Pushbot")
 public class JVAuto1 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -124,10 +124,10 @@ public class JVAuto1 extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        driveForward(1,1);
-        pewLeft.setPower(-0.6);
-        pewRight.setPower(0.6);
-        sleep(1500);
+        driveForward(1,1.5);
+        pewLeft.setPower(-0.7);
+        pewRight.setPower(0.7);
+        sleep(3000);
         lifty.setPower(.5);
         grabby.setPower(.5);
         sleep(800);
@@ -165,7 +165,7 @@ public class JVAuto1 extends LinearOpMode {
         grabby.setPower(0);
         sleep(800);
         sleep(2000);
-        driveForward(1,3.5);
+        driveForward(1,3);
 
         sleep(1000);     // pause for servos to move
 
@@ -210,7 +210,7 @@ public class JVAuto1 extends LinearOpMode {
     }
 
     //     Method to turn left with speed and time
-    public void turnLeft(double speed, double seconds) {
+    public void turnRight(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(speed);
@@ -225,7 +225,7 @@ public class JVAuto1 extends LinearOpMode {
     }
 
     //     Method to turn right with speed and time
-    public void turnRight(double speed, double seconds) {
+    public void turnLeft(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(-speed);

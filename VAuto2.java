@@ -68,6 +68,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="V Auto just shoot", group="Pushbot")
+@Disabled
 public class VAuto2 extends LinearOpMode {
 
     /* Declare OpMode members. */

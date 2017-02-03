@@ -67,8 +67,10 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JV Auto 3", group="Pushbot")
-@Disabled
+
+// Start perpendicular, Drive forward shoot, attempt to go on ramp
+
+@Autonomous(name="Ramp Red", group="Pushbot")
 public class JVAuto3 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -122,12 +124,62 @@ public class JVAuto3 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
 
-        driveForward(1,1);
-        shoot(5000);
-        turnRight(1,1);
-        driveBackward(1,1);
-        turnLeft(1,1);
-        driveBackward(1,1);
+        driveForward(1,0.5);
+        pewLeft.setPower(-0.6);
+        pewRight.setPower(0.6);
+        sleep(3000);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        lifty.setPower(.5);
+        grabby.setPower(.5);
+        sleep(800);
+        lifty.setPower(0);
+        grabby.setPower(0);
+        sleep(800);
+        sleep(2000);
+        pewLeft.setPower(0);
+        pewRight.setPower(0);
+
+        turnRight(1,1.5);
+        sleep(1000);
+        driveBackward(1,1.85);
+        sleep(1000);
+        turnLeft(1,.85);
+        sleep(1000);
+        driveBackward(1,2);
+        driveBackward(1,2);
+        driveBackward(1,2);
+        sleep(1000);
+
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -140,6 +192,7 @@ public class JVAuto3 extends LinearOpMode {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             lifty.setPower(.5);
+            grabby.setPower(.5);
             sleep(500);
             lifty.setPower(0);
             sleep(500);
@@ -184,7 +237,7 @@ public class JVAuto3 extends LinearOpMode {
     }
 
     //     Method to turn left with speed and time
-    public void turnLeft(double speed, double seconds) {
+    public void turnRight(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(speed);
@@ -199,7 +252,7 @@ public class JVAuto3 extends LinearOpMode {
     }
 
     //     Method to turn right with speed and time
-    public void turnRight(double speed, double seconds) {
+    public void turnLeft(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(-speed);

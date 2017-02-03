@@ -54,8 +54,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 
-@TeleOp(name="JV J and E", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
-public class JVTestMode extends OpMode
+@TeleOp(name="JV B and R", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+public class JVBandR extends OpMode
 {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -126,8 +126,8 @@ public class JVTestMode extends OpMode
         telemetry.addData("Status", "Running: " + runtime.toString());
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-         leftMotor.setPower(-gamepad1.left_stick_y);
-         rightMotor.setPower(gamepad1.right_stick_y);
+        leftMotor.setPower(-gamepad1.left_stick_y);
+        rightMotor.setPower(gamepad1.right_stick_y);
 
 
         frontleftMotor.setPower(-gamepad1.left_stick_y);
@@ -149,29 +149,29 @@ public class JVTestMode extends OpMode
         }
 
 
-//        if(gamepad2.x) {
-//            grabby.setPower(.5);
-//        }
-//
-//        if(gamepad2.y) {
-//            grabby.setPower(-1);
-//        }
-
-//        if(!gamepad2.x && !gamepad2.y) {
-//            grabby.setPower(0);
-//        }
-
-        if(!gamepad1.left_bumper && !gamepad1.right_bumper) {
-            grabby.setPower(0);
-        }
-
-        if(gamepad1.left_bumper) {
+        if(gamepad2.x) {
             grabby.setPower(.5);
         }
 
-        if(gamepad1.right_bumper) {
+        if(gamepad2.y) {
             grabby.setPower(-1);
         }
+
+        if(!gamepad2.x && !gamepad2.y) {
+            grabby.setPower(0);
+        }
+
+//        if(!gamepad1.left_bumper && !gamepad1.right_bumper) {
+//            grabby.setPower(0);
+//        }
+//
+//        if(gamepad1.left_bumper) {
+//            grabby.setPower(.5);
+//        }
+//
+//        if(gamepad1.right_bumper) {
+//            grabby.setPower(-1);
+//        }
 
         if(gamepad2.right_bumper) {
             lifty.setPower(.5);

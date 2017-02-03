@@ -70,6 +70,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @Autonomous(name="V Auto CounterClock", group="Pushbot")
+@Disabled
 public class VAuto1Counter extends LinearOpMode {
 
     /* Declare OpMode members. */

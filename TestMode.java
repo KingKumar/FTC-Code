@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -53,6 +54,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Test Mode", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+@Disabled
 public class TestMode extends OpMode
 {
     /* Declare OpMode members. */
@@ -64,6 +66,10 @@ public class TestMode extends OpMode
     private DcMotor feedy = null;
 
     double powerLevel;
+
+    private Servo rightProbe = null;
+    private Servo leftProbe = null;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -82,6 +88,8 @@ public class TestMode extends OpMode
         pews  = hardwareMap.dcMotor.get("pews");
         feedy = hardwareMap.dcMotor.get("feedy");
 
+        leftProbe = hardwareMap.servo.get("leftprobe");
+        rightProbe = hardwareMap.servo.get("rightprobe");
 
 
 
@@ -129,6 +137,22 @@ public class TestMode extends OpMode
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
         leftMotor.setPower(-gamepad1.left_stick_y/2);
         rightMotor.setPower(-gamepad1.right_stick_y/2);
+
+//        if(gamepad2.left_stick_y > 0 && gamepad2.right_stick_y > 0) {
+//            leftProbe.setPosition(gamepad2.left_stick_y);
+//            rightProbe.setPosition(gamepad2.right_stick_y);
+//        }
+
+        if (gamepad2.dpad_right) {
+            leftProbe.setPosition(.99);
+            rightProbe.setPosition(.99);
+        }
+
+        if (gamepad2.dpad_left) {
+            leftProbe.setPosition(.1);
+            rightProbe.setPosition(.1);
+        }
+
 
         if (gamepad2.right_bumper) {
             pews.setPower(powerLevel);

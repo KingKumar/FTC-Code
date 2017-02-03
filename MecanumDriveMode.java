@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -52,22 +53,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-
-
-@TeleOp(name="JV J and E", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
-public class JVTestMode extends OpMode
+@TeleOp(name="Mecanum Drive Mode", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+@Disabled
+public class MecanumDriveMode extends OpMode
 {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
-    private DcMotor pewLeft= null;
-    private DcMotor pewRight = null;
-    private DcMotor grabby = null;
-    private DcMotor lifty = null;
-    private DcMotor frontleftMotor = null;
-    private DcMotor frontrightMotor = null;
+    private DcMotor pews= null;
+    private DcMotor feedy = null;
+
+    double powerLevel;
+
+    private Servo rightProbe = null;
+    private Servo leftProbe = null;
 
 
     /*
@@ -84,22 +85,18 @@ public class JVTestMode extends OpMode
         leftMotor  = hardwareMap.dcMotor.get("left motor");
         rightMotor = hardwareMap.dcMotor.get("right motor");
 
-        frontleftMotor  = hardwareMap.dcMotor.get("fleft motor");
-        frontrightMotor = hardwareMap.dcMotor.get("fright motor");
+        pews  = hardwareMap.dcMotor.get("pews");
+        feedy = hardwareMap.dcMotor.get("feedy");
 
-        pewLeft  = hardwareMap.dcMotor.get("pewleft");
-        pewRight = hardwareMap.dcMotor.get("pewright");
-
-        grabby  = hardwareMap.dcMotor.get("grabby");
-        lifty = hardwareMap.dcMotor.get("lifty");
-
+        leftProbe = hardwareMap.servo.get("leftprobe");
+        rightProbe = hardwareMap.servo.get("rightprobe");
 
 
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
-//         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-//         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         telemetry.addData("Status", "Initialized");
     }
 
@@ -125,66 +122,61 @@ public class JVTestMode extends OpMode
     public void loop() {
         telemetry.addData("Status", "Running: " + runtime.toString());
 
-        // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-         leftMotor.setPower(-gamepad1.left_stick_y);
-         rightMotor.setPower(gamepad1.right_stick_y);
-
-
-        frontleftMotor.setPower(-gamepad1.left_stick_y);
-        frontrightMotor.setPower(gamepad1.right_stick_y);
-
-
         if (gamepad2.a) {
-            pewLeft.setPower(-0.8);
-            pewRight.setPower(0.8);
+            powerLevel = 0.85;
         }
 
-        if (gamepad2.b) {
-            pewLeft.setPower(0.4);
-            pewRight.setPower(-0.4);
-        }
-        if (!gamepad2.b && !gamepad2.a) {
-            pewLeft.setPower(0);
-            pewRight.setPower(0);
+        if (gamepad2.x) {
+            powerLevel = 0.8;
         }
 
+        if (gamepad2.y) {
+            powerLevel = 0.9;
+        }
 
-//        if(gamepad2.x) {
-//            grabby.setPower(.5);
-//        }
-//
-//        if(gamepad2.y) {
-//            grabby.setPower(-1);
+        // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
+        leftMotor.setPower(gamepad1.left_stick_y/2);
+        rightMotor.setPower(gamepad1.right_stick_y/2);
+
+//        if(gamepad2.left_stick_y > 0 && gamepad2.right_stick_y > 0) {
+//            leftProbe.setPosition(gamepad2.left_stick_y);
+//            rightProbe.setPosition(gamepad2.right_stick_y);
 //        }
 
-//        if(!gamepad2.x && !gamepad2.y) {
-//            grabby.setPower(0);
-//        }
-
-        if(!gamepad1.left_bumper && !gamepad1.right_bumper) {
-            grabby.setPower(0);
+        if (gamepad2.dpad_right) {
+            leftProbe.setPosition(.99);
+            rightProbe.setPosition(.99);
         }
 
-        if(gamepad1.left_bumper) {
-            grabby.setPower(.5);
-        }
-
-        if(gamepad1.right_bumper) {
-            grabby.setPower(-1);
-        }
-
-        if(gamepad2.right_bumper) {
-            lifty.setPower(.5);
-        }
-
-        if(gamepad2.left_bumper) {
-            lifty.setPower(-.5);
+        if (gamepad2.dpad_left) {
+            leftProbe.setPosition(.1);
+            rightProbe.setPosition(.1);
         }
 
 
+        if (gamepad2.right_bumper) {
+            pews.setPower(powerLevel);
+        }
 
-        if(!gamepad2.right_bumper && !gamepad2.left_bumper) {
-            lifty.setPower(0);
+
+        if (gamepad2.dpad_down) {
+            pews.setPower(-1);
+        }
+
+        if (!gamepad2.dpad_down && !gamepad2.right_bumper) {
+            pews.setPower(0);
+        }
+
+        if (gamepad1.left_bumper || gamepad2.left_bumper) {
+            feedy.setPower(.25);
+        }
+
+        if (!gamepad1.left_bumper && !gamepad2.left_bumper && !gamepad1.b && !gamepad2.b) {
+            feedy.setPower(0);
+        }
+
+        if (gamepad1.b || gamepad2.b) {
+            feedy.setPower(-.25);
         }
 
     }

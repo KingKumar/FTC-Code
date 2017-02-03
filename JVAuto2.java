@@ -67,8 +67,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="JV Auto 2 (No park)", group="Pushbot")
-@Disabled
+@Autonomous(name="Corner Stop", group="Pushbot")
 public class JVAuto2 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -124,10 +123,10 @@ public class JVAuto2 extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        driveForward(1,1);
-        pewLeft.setPower(-0.6);
-        pewRight.setPower(0.6);
-        sleep(1500);
+        driveForward(1,1.5);
+        pewLeft.setPower(-0.7);
+        pewRight.setPower(0.7);
+        sleep(3000);
         lifty.setPower(.5);
         grabby.setPower(.5);
         sleep(800);
@@ -209,7 +208,7 @@ public class JVAuto2 extends LinearOpMode {
     }
 
     //     Method to turn left with speed and time
-    public void turnLeft(double speed, double seconds) {
+    public void turnRight(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(speed);
@@ -224,7 +223,7 @@ public class JVAuto2 extends LinearOpMode {
     }
 
     //     Method to turn right with speed and time
-    public void turnRight(double speed, double seconds) {
+    public void turnLeft(double speed, double seconds) {
         runtime.reset();
         while(runtime.seconds() < seconds) {
             leftMotor.setPower(-speed);

@@ -67,6 +67,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="V Auto Clock", group="Pushbot")
+@Disabled
 public class VAuto1 extends LinearOpMode {
 
     /* Declare OpMode members. */
